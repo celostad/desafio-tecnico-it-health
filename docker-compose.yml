@@ -1,0 +1,52 @@
+version: "3.7"
+
+networks:
+    app-network:
+        driver: bridge
+
+services:
+    app:
+        build: 
+            context: ./
+            dockerfile: docker/Dockerfile
+        image: php:8.0.14-fpm-buster
+        container_name: teste-app
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www/public
+        volumes: 
+            - ./www:/var/www/public
+        networks: 
+            - app-network        
+    
+    mysql:
+        image: mysql:5.7.33
+        container_name: teste-mysql
+        restart: unless-stopped
+        tty: true
+        environment: 
+            MYSQL_DATABASE: db_desafio_it_health
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_PASSWORD: secret
+            # MYSQL_USER: root
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        ports:
+            - 3306:3306
+        volumes: 
+            - ./docker/mysql/data:/var/lib/mysql
+        networks:
+            - app-network        
+    
+    nginx:
+        image: nginx:1.19.8-alpine
+        container_name: teste-nginx
+        restart: unless-stopped
+        tty: true
+        ports: 
+            - 8100:80
+        volumes: 
+            - ./www:/var/www/public
+            - ./docker/nginx/conf:/etc/nginx/conf.d
+        networks: 
+            - app-network
