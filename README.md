@@ -42,6 +42,7 @@ Pontos extras:
 - Clonar o projeto `git clone https://github.com/celostad/desafio-tecnico-it-health.git`
 - Entrar na pasta do projeto `cd desafio-tecnico-it-health`
 - instalar o projeto `docker-compose up -d --build`
+- Entrar na pasta do Laravel `cd www`
 - Instalar o composer `composer install`
 - Criar o .env `cp .env.example .env`
 - Gerar a chave do servidor artisan `php artisan key:generate`
